@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Client</title>
+</head>
+<body>
+    <h1>API Client</h1>
+
+    <button onclick="getBanks()">Get Banks</button>
+
+    <label for="bankTitle">Enter Bank Title:</label>
+    <input type="text" id="bankTitle" placeholder="Enter bank title">
+    <button onclick="filterBanks()">Filter Banks</button>
+
+    <script>
+        async function getBanks() {
+            try {
+                const response = await fetch('/api/banks');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+
+        async function filterBanks() {
+            try {
+                const title = document.getElementById('bankTitle').value;
+                const response = await fetch(`/api/banks/filter?title=${encodeURIComponent(title)}`);
+                const data = await response.json();
+
+                // Обработка полученных данных
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching filtered banks:', error);
+            }
+        }
+
+    </script>
+</body>
+</html>
